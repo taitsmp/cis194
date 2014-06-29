@@ -20,4 +20,11 @@ parseMessage msg = Unknown msg
 parse :: String -> [LogMessage]
 parse f = map (parseMessage) $ lines f
 
-
+-- insert new LogMessage into sorted MessageTree
+insert :: LogMessage -> MessageTree -> MessageTree
+insert (Unknown _) mt = mt
+insert lm Leaf = (Node Leaf lm Leaf) 
+insert lm1@(LogMessage _ ts1 _) (Node t1 lm2@(LogMessage _ ts2 _) t2) 
+  | ts1 <  ts2 = (Node (insert lm1 t1) lm2 t2)
+  | ts1 >= ts2 = (Node t1 lm2 (insert lm1 t2))
+-- is there a cleaner way to do the above?  
