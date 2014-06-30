@@ -1,4 +1,4 @@
-{-# OPTIONS_GHC -Wall #-}
+--{-# OPTIONS_GHC -Wall #-}
 module LogAnalysis where 
 
 import Log
@@ -37,5 +37,6 @@ build lms = foldl (\mt lm -> insert lm mt) Leaf lms
 -- traverse a message tree in order and create a list of LogMessages
 inOrder :: MessageTree -> [LogMessage]
 inOrder Leaf = []
-inOrder (Node Leaf lm mt) = lm : (inOrder mt)
-inOrder (Node mt lm Leaf) = (inOrder mt) ++ [lm]
+--inOrder (Node Leaf lm mt) = lm : (inOrder mt)
+--inOrder (Node mt lm Leaf) = (inOrder mt) ++ [lm]
+inOrder (Node mt1 lm mt2) = (inOrder mt1) ++ [lm] ++ (inOrder mt2)
