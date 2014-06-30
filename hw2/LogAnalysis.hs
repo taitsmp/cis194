@@ -30,3 +30,12 @@ insert lm1 (Node t1 lm2 t2) =
 			then (Node (insert lm1 t1) lm2 t2) 
 			else (Node t1 lm2 (insert lm1 t2))
 -- is there a cleaner way to do the above?  
+
+build :: [LogMessage] -> MessageTree
+build lms = foldl (\mt lm -> insert lm mt) Leaf lms
+
+-- traverse a message tree in order and create a list of LogMessages
+inOrder :: MessageTree -> [LogMessage]
+inOrder Leaf = []
+inOrder (Node Leaf lm mt) = lm : (inOrder mt)
+inOrder (Node mt lm Leaf) = (inOrder mt) ++ [lm]
