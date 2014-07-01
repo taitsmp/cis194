@@ -2,6 +2,7 @@
 module LogAnalysis where 
 
 import Log
+import Data.Maybe
 
 -- extract ints from "words" in a message
 messageInts :: [String] -> [Int]
@@ -56,7 +57,9 @@ logMessageMessage _ = Nothing
 
 -- sort the messages. filter out 50 or greater.
 whatWentWrong :: [LogMessage] -> [String]
-whatWentWrong lms = map (\lm -> case logMessageMessage(lm) of Just msg -> msg) . 
-                inOrder . build $ takeWhile (\lm -> case errorTimeStamp(lm) of 
+--whatWentWrong lms = map (\lm -> case logMessageMessage(lm) of Just msg -> msg) . 
+--not sure if I got the use of mapMaybe right. 
+whatWentWrong lms = mapMaybe (logMessageMessage)  . 
+                inOrder . build $ filter (\lm -> case errorTimeStamp(lm) of 
                                                          Nothing -> False
                                                          Just ts -> ts >= 50) lms
