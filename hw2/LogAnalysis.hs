@@ -54,10 +54,9 @@ logMessageMessage (LogMessage Info _ msg) = Just msg
 logMessageMessage (LogMessage Warning _ msg) = Just msg
 logMessageMessage _ = Nothing
 
-
 -- sort the messages. filter out 50 or greater.
 whatWentWrong :: [LogMessage] -> [String]
-whatWentWrong lms = map (\lm -> case lm of (LogMessage (Error _ ) _ msg) -> msg) . 
+whatWentWrong lms = map (\lm -> case logMessageMessage(lm) of Just msg -> msg) . 
                 inOrder . build $ takeWhile (\lm -> case errorTimeStamp(lm) of 
                                                          Nothing -> False
                                                          Just ts -> ts >= 50) lms
