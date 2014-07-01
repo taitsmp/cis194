@@ -41,6 +41,12 @@ inOrder Leaf = []
 --inOrder (Node mt lm Leaf) = (inOrder mt) ++ [lm]
 inOrder (Node mt1 lm mt2) = (inOrder mt1) ++ [lm] ++ (inOrder mt2)
 
+-- experimenting with "getter" functions
+errorTimeStamp :: LogMessage -> Maybe TimeStamp 
+errorTimeStamp lm = case lm of 
+                     (LogMessage (Error _ ) ts _) -> Just ts
+                     _ -> Nothing
+
 -- sort the messages. filter out 50 or greater.
 whatWentWrong :: [LogMessage] -> [String]
 whatWentWrong lms = map (\lm -> case lm of (LogMessage (Error _ ) _ msg) -> msg) . 
