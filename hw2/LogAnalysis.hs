@@ -40,3 +40,10 @@ inOrder Leaf = []
 --inOrder (Node Leaf lm mt) = lm : (inOrder mt)
 --inOrder (Node mt lm Leaf) = (inOrder mt) ++ [lm]
 inOrder (Node mt1 lm mt2) = (inOrder mt1) ++ [lm] ++ (inOrder mt2)
+
+-- sort the messages. filter out 50 or greater.
+whatWentWrong :: [LogMessage] -> [String]
+whatWentWrong lms = map (\lm -> case lm of (LogMessage (Error _ ) _ msg) -> msg) . 
+                inOrder . build $ takeWhile (\lm -> case lm of 
+                                                         (LogMessage (Error _ ) ts _) -> ts >= 50
+                                                         _ -> False) lms
