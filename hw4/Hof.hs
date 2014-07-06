@@ -24,9 +24,9 @@ foldTree xs = foldr (treeInsert) Leaf xs
 
 treeInsert :: a -> Tree a -> Tree a
 treeInsert x Leaf = (Node 0 Leaf x Leaf)
-treeInsert x (Node i t1 _ t2) 
-   | d1 < d2 = treeInsert x t1 -- wish I could just update the height here but I can't...would be wrong and vars are immutable.  
-   | otherwise = treeInsert x t2 
+treeInsert x (Node ht t1 y t2) 
+   | d1 < d2 = (Node ht (treeInsert x t1) y t2) -- wish I could just update the height here but I can't...would be wrong and vars are immutable.  
+   | otherwise = (Node ht t1 y (treeInsert x t2))
    where d1 = depthOfClosestLeaf 0 t1
          d2 = depthOfClosestLeaf 0 t2
 
@@ -35,6 +35,20 @@ depthOfClosestLeaf i Leaf = i
 depthOfClosestLeaf i (Node h t1 _ t2) = min d1 d2 
                                           where d1 = depthOfClosestLeaf (i+1) t1 
                                                 d2 = depthOfClosestLeaf (i+1) t2
+
+-- start at leafs.  check height of left and right subtree.  height of current node is 1+max height. 
+-- need to pass around the height? 
+UpdateHeight :: Tree a -> Tree a
+UpdateHeight Leaf = Leaf
+UpdateHeight (Node h Leaf a t) case t of
+                                 (Node ht _ _ _) -> (Node ht+1 Leaf a t)
+                                 Leaf -> (Node 0 Leaf a Leaf)
+UpdateHeight (Node h t1 a t2) -> 
+              
+
+--treeHeight :: Tree a -> Int
+--treeHeight Leaf = 0
+--treeHeight (Node 
 
 -- when to call this?  height will be inaccurate right after an insert.  
 -- treeHeight :: Tree a -> Int
