@@ -17,9 +17,10 @@ data Tree a = Leaf
 -- keep tree balanced.  Always insert node into shortest path. 
 -- accumulator keeps track of new tree state. 
 -- use foldr so the last element is inserted first. 
+-- note: I think this is easier than I'd think.  Shortest path and longest path can still differ by two and trees can be balanced. 
 foldTree :: [a] -> Tree a
-foldTree xs = let len = length xs in 
-                           foldr (treeInsert) Leaf $ zipWith (\h a -> (h,a)) (heights len) xs
+foldTree xs = let len = length xs in
+                  foldr (treeInsert) Leaf $ zipWith (\h a -> (h,a)) (heights len) xs
 
 
 treeInsert :: (Integer, a) -> Tree a -> Tree a
@@ -30,7 +31,8 @@ treeInsert tup (Node ht t1 y t2)
    where d1 = depthOfClosestLeaf 0 t1
          d2 = depthOfClosestLeaf 0 t2
 
--- if this function is wrong replace it with a function that counts leaves in a tree.  subtree with fewest leaves is one way to determine where to insert (after comparing subtree heights). 
+-- if this function is wrong replace it with a function that counts leaves in a tree.  
+-- subtree with fewest leaves is one way to determine where to insert (after comparing subtree heights). 
 depthOfClosestLeaf :: Int -> Tree a -> Int 
 depthOfClosestLeaf i Leaf = i
 depthOfClosestLeaf i (Node _ t1 _ t2) = min d1 d2 
@@ -40,10 +42,13 @@ depthOfClosestLeaf i (Node _ t1 _ t2) = min d1 d2
 
 -- idea: you know the number of items to insert.  calculate height of each item before you insert it. 
 heights :: Int -> [Integer]
-heights i = map toInteger . take i $ heights' i i 
+heights i = reverse . map toInteger . take i $ heights' h h
+            where h = (ceiling . toRational . logBase 2 $ fromIntegral i) - 1 
 
+
+--this is wrong... heights' 1 1
 heights' :: Int -> Int -> [Int] -- start and num items in list?
-heights' start 0 = let nodes = start ^ 2 in replicate nodes 0
+heights' start 0 = let nodes = 2^start in replicate nodes 0
 heights' start dep = let nodes = (2^(start - dep)) in (replicate nodes dep) ++ (heights' start (dep-1)) 
 
 -- implement xor as a fold
