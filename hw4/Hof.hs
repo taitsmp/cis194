@@ -51,6 +51,13 @@ heights' :: Int -> Int -> [Int] -- start and num items in list?
 heights' start 0 = let nodes = 2^start in replicate nodes 0
 heights' start dep = let nodes = (2^(start - dep)) in (replicate nodes dep) ++ (heights' start (dep-1)) 
 
+
+-- not part of hw.  Take Tree and fold it to something else
+treefold :: b -> (Tree a -> b -> b) -> Tree a -> b
+treefold z _ Leaf = z
+treefold z f (Node _ t1 y t2) = f t1 (treefold z f t2)  
+treefold z f (Node _ t1 y t2) = f t1 (treefold (f t2 (treefold z f (Node 0 Leaf y Leaf))) f Leaf ) 
+
 -- implement xor as a fold
 xor :: [Bool] -> Bool
 xor = foldr (\x acc -> if x then not acc else acc) False 
