@@ -52,11 +52,16 @@ heights' start 0 = let nodes = 2^start in replicate nodes 0
 heights' start dep = let nodes = (2^(start - dep)) in (replicate nodes dep) ++ (heights' start (dep-1)) 
 
 
--- not part of hw.  Take Tree and fold it to something else
+-- not part of hw.  Take Tree and fold it to something else. doubt this works. 
 treefold :: b -> (Tree a -> b -> b) -> Tree a -> b
 treefold z _ Leaf = z
-treefold z f (Node _ t1 y t2) = f t1 (treefold z f t2)  
 treefold z f (Node _ t1 y t2) = f t1 (treefold (f t2 (treefold z f (Node 0 Leaf y Leaf))) f Leaf ) 
+
+-- this is a tree fold operation I've seen a few places on the web. Allow yourself to recurse twice in single expression. 
+foldTree' :: (a -> b -> b -> b) -> b -> Tree a -> b
+foldTree' f x Leaf = x
+foldTree' f x (Node _ l t r ) = f t (foldTree' f x l) (foldTree' f x r)  -- 't' is the value.  'x' is the accumulator
+
 
 -- implement xor as a fold
 xor :: [Bool] -> Bool
