@@ -14,3 +14,5 @@ evalStr s = case parseExp Lit Add Mul s of
               Nothing -> Nothing
               Just ae -> Just (eval ae) 
 
+reify :: ExprT -> ExprT
+reify = id
