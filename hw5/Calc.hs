@@ -1,4 +1,4 @@
---{-# OPTIONS_GHC -Wall #-}
+{-# OPTIONS_GHC -Wall #-}
 module Calc where
 
 import ExprT 
@@ -16,3 +16,8 @@ evalStr s = case parseExp Lit Add Mul s of
 
 reify :: ExprT -> ExprT
 reify = id
+
+testExp :: Expr a => Maybe a
+testExp = parseExp lit add mul "(3 * -4) + 5"
+
+

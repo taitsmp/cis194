@@ -1,4 +1,4 @@
-{-# LANGUAGE GeneralizedNewtypeDeriving #-}
+{-# LANGUAGE GeneralizedNewtypeDeriving, TypeSynonymInstances #-}
 module ExprT where
 
 import Prelude
@@ -13,9 +13,9 @@ data ExprT = Lit Integer
   deriving (Show, Eq)
 
 instance Expr ExprT where 
-  lit i = Lit i
-  mul i j = Mul i j
-  add i j = Add i j 
+  lit = Lit
+  mul = Mul 
+  add = Add  
 
 instance Expr Integer where
   lit i = i
@@ -36,12 +36,10 @@ instance Expr MinMax where
   mul = min
   add = max
  
--- next steps
--- 1. look up newtype on github. what do you see?
--- 2. change newtype to data. Does it work? 
-
 -- not working. type errors 
 instance Expr Mod7 where
   lit  = Mod7
   add i j = (i + j) `mod` 7 
   mul i j = (i * j) `mod` 7
+
+
