@@ -24,3 +24,5 @@ class Stream a where
   cons :: a -> [a] -> [a]  -- how to name this fn ':'?
   cons x xs = x:xs
 
+streamToList :: Stream a -> [a]
+streamToList  (Stream a) = repeat a
