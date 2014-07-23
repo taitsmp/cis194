@@ -22,6 +22,5 @@ fibs2 =  map (\a -> fst(a)) $ iterate fibt (0,1)
 -- ex 3
 data Stream a = Element a (Stream a)
 
--- streamToList :: Stream a -> [a]
--- streamToList Element a = [a]
--- streamToList Stream a =  
+streamToList :: Stream a -> [a]
+streamToList (Element x xs) = x : streamToList xs
