@@ -20,9 +20,8 @@ fibs2 :: [Integer]
 fibs2 =  map (\a -> fst(a)) $ iterate fibt (0,1)
 
 -- ex 3
-class Stream a where
-  cons :: a -> [a] -> [a]  -- how to name this fn ':'?
-  cons x xs = x:xs
+data Stream a = Element a (Stream a)
 
-streamToList :: Stream a -> [a]
-streamToList  (Stream a) = repeat a
+-- streamToList :: Stream a -> [a]
+-- streamToList Element a = [a]
+-- streamToList Stream a =  
