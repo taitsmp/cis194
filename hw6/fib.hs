@@ -26,4 +26,4 @@ streamToList :: Stream a -> [a]
 streamToList (Element x xs) = x : streamToList xs
 
 instance Show a => Show (Stream a) where
-  show a = map (show) . take 20 $ streamToList a
+  show a = foldl (\acc x ->  acc ++ show x ) "" (take 20 $ streamToList a)
