@@ -24,3 +24,6 @@ data Stream a = Element a (Stream a)
 
 streamToList :: Stream a -> [a]
 streamToList (Element x xs) = x : streamToList xs
+
+instance Show a => Show (Stream a) where
+  show a = case a of (Element x xs) -> show x ++ show xs
