@@ -27,3 +27,7 @@ streamToList (Element x xs) = x : streamToList xs
 
 instance Show a => Show (Stream a) where
   show a = foldl (\acc x ->  acc ++ show x ) "" (take 20 $ streamToList a)
+
+-- ex4
+streamRepeat :: a -> Stream a
+streamRepeat a = Element a (streamRepeat a)
