@@ -39,3 +39,14 @@ streamFromSeed :: (a -> a) -> a -> Stream a
 streamFromSeed f x = let y = f x in
                      Element y (streamFromSeed f y) 
 
+-- ex5
+nats :: Stream Integer
+nats = streamFromSeed (+1) 0
+
+interleaveStreams :: Stream a -> Stream a -> Stream a
+interleaveStreams (Element e1 s1) (Element e2 s2) = Element e1 (Element e2 (interleaveStreams s1 s2))
+
+istreams :: Integer -> Stream Integer
+istreams 1 = streamRepeat 0
+istreams n = interleaveStreams (istreams (n-1), streamRepeat n)
+
