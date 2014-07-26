@@ -31,3 +31,11 @@ instance Show a => Show (Stream a) where
 -- ex4
 streamRepeat :: a -> Stream a
 streamRepeat a = Element a (streamRepeat a)
+
+streamMap :: (a -> b) -> Stream a -> Stream b
+streamMap f (Element x s) = Element (f x) (streamMap f s) 
+
+streamFromSeed :: (a -> a) -> a -> Stream a
+streamFromSeed f x = let y = f x in
+                     Element y (streamFromSeed f y) 
+
