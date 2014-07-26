@@ -26,7 +26,7 @@ streamToList :: Stream a -> [a]
 streamToList (Element x xs) = x : streamToList xs
 
 instance Show a => Show (Stream a) where
-  show a = foldl (\acc x ->  acc ++ show x ) "" (take 20 $ streamToList a)
+  show a = foldl (\acc x ->  acc ++ " " ++ show x ) "" (take 20 $ streamToList a)
 
 -- ex4
 streamRepeat :: a -> Stream a
@@ -46,7 +46,11 @@ nats = streamFromSeed (+1) 0
 interleaveStreams :: Stream a -> Stream a -> Stream a
 interleaveStreams (Element e1 s1) (Element e2 s2) = Element e1 (Element e2 (interleaveStreams s1 s2))
 
+--this would produce the right answer for ruler but it never returns. I'm missing something with laziness, evaluation and recursion. 
+--could I somehow foldl this?  seems like no...
 istreams :: Integer -> Stream Integer
-istreams 1 = streamRepeat 0
-istreams n = interleaveStreams (istreams (n-1), streamRepeat n)
+istreams n = interleaveStreams (streamRepeat n) (istreams (n+1))
+--istreams n = interleaveStreams (streamRepeat n) nats
 
+ruler :: Stream Integer
+ruler = istreams 0
