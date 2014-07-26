@@ -48,9 +48,11 @@ interleaveStreams (Element e1 s1) (Element e2 s2) = Element e1 (Element e2 (inte
 
 --this would produce the right answer for ruler but it never returns. I'm missing something with laziness, evaluation and recursion. 
 --could I somehow foldl this?  seems like no...
+--could I map all "nats" to streamRepeat them somehow fold or reduce with interleaveStreams?
 istreams :: Integer -> Stream Integer
 istreams n = interleaveStreams (streamRepeat n) (istreams (n+1))
 --istreams n = interleaveStreams (streamRepeat n) nats
 
 ruler :: Stream Integer
+--ruler = foldl (\streams s -> interleaveStreams streams s) (streamRepeat 0)
 ruler = istreams 0
