@@ -49,17 +49,11 @@ interleaveStreams (Element e1 s1) s2 = Element e1 (interleaveStreams s2 s1)
 -- http://www.haskell.org/pipermail/beginners/2014-February/013160.html
 --interleaveStreams (Element e1 s1) ~(Element e2 s2) = Element e1 (Element e2 (interleaveStreams s1 s2))  -- use of irrefutable pattern 
 
---TODO: try wrapping the strem in a container of some kind? 
 istreams :: Integer -> Stream Integer
---istreams n = interleaveStreams (streamRepeat n) (Element (n+1) (istreams (n+1))) -- extra "Element" fixes stack issue but breaks solution
---this would produce the right answer for ruler but it never returns. I'm missing something with laziness, evaluation and recursion. 
 istreams n = interleaveStreams (streamRepeat n) (istreams (n+1))
 
 --the solution below is correct but obviously hard coded. 
 --interleaveStreams (streamRepeat 0) (interleaveStreams (streamRepeat 1) (interleaveStreams (streamRepeat 2) (streamRepeat 3)))
-
-istreams' :: Stream Integer ->Stream Integer
-istreams' (Element n s) = interleaveStreams s (istreams' (Element (n+1) (streamRepeat (n+1))))
 
 ruler :: Stream Integer
 ruler = foldr1 interleaveStreams (map streamRepeat [0..])
