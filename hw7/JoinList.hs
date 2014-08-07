@@ -20,10 +20,10 @@ tag (Append m _ _) = m
 (+++) a b = Append (tag a `mappend` tag b) a b
 
 indexJ :: (Sized b, Monoid b) => 
-          Int -> JoinList a b -> Maybe a
+          Int -> JoinList b a -> Maybe a
 indexJ _ Empty = Nothing
-indexJ i (Single _ a) 
-     | i == 0    = Just a
+indexJ i (Single _ x) 
+     | i == 0    = Just x
      | otherwise = Nothing
 indexJ i (Append m j1 j2) 
      | i > last  = Nothing
