@@ -29,14 +29,12 @@ indexJ i (Single _ x)
      | i == 0    = Just x
      | otherwise = Nothing
 indexJ i (Append m j1 j2) 
-     | i > last  = Nothing
+     | i > last' = Nothing
      | i < 0     = Nothing 
-     | otherwise = case (tag(j1), tag(j2)) of 
-                                           (mempty, _) -> indexJ i j2
-                                           (_, mempty) -> indexJ i j1
+     | otherwise = case (tag j1, tag j2) of 
                                            (k, j)      -> let ki = getSize(size k)
                                                               ji = getSize(size j) 
-                                                          in if i < ki then indexJ i j1 else indexJ (ki - i) j2
+                                                          in if i < ki then indexJ ji j1 else indexJ (ki - i) j2
                                                              
      where 
-       last = getSize(size m) - 1 
+       last' = getSize(size m) - 1 
