@@ -9,7 +9,6 @@ data JoinList m a = Empty
                   | Append m (JoinList m a) (JoinList m a)
                   deriving (Eq, Show)
 
-
 tag :: Monoid m => JoinList m a -> m
 tag (Single m _) = m 
 tag Empty = mempty
@@ -19,6 +18,10 @@ tag (Append m _ _) = m
 (+++) :: Monoid m => JoinList m a -> JoinList m a -> JoinList m a
 (+++) a b = Append (tag a `mappend` tag b) a b
 
+-- helper function.  given the moniod 
+
+
+-- return element 'a' at the provided index from the joinlist b a.
 indexJ :: (Sized b, Monoid b) => 
           Int -> JoinList b a -> Maybe a
 indexJ _ Empty = Nothing
@@ -31,9 +34,9 @@ indexJ i (Append m j1 j2)
      | otherwise = case (tag(j1), tag(j2)) of 
                                            (mempty, _) -> indexJ i j2
                                            (_, mempty) -> indexJ i j1
-                                           (k, j)      -> let ki = getSize(k)
-                                                              ji = getSize(j) 
+                                           (k, j)      -> let ki = getSize(size k)
+                                                              ji = getSize(size j) 
                                                           in if i < ki then indexJ i j1 else indexJ (ki - i) j2
                                                              
      where 
-       last = getSize(m) - 1 
+       last = getSize(size m) - 1 
