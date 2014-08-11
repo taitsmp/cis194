@@ -31,9 +31,9 @@ indexJ i (Single _ x)
 indexJ i (Append m j1 j2) 
      | i > last' = Nothing
      | i < 0     = Nothing 
-     | otherwise = let ki = getSize . size $ tag j1
-                       ji = getSize . size $ tag j2
-                   in if i < ki then indexJ ji j1 else indexJ (ki - i) j2
+     | otherwise = let j = getSize . size $ tag j1
+                       k = getSize . size $ tag j2
+                   in if i < j then indexJ i j1 else indexJ (i-j) j2
                                                              
      where 
        last' = getSize(size m) - 1 
