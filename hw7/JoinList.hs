@@ -20,6 +20,7 @@ tagi j = getSize . size $ tag j
 -- get the tag on two join lists then perform mappend between the two to create the new annotation. 
 (+++) :: Monoid m => JoinList m a -> JoinList m a -> JoinList m a
 (+++) a b = Append (tag a `mappend` tag b) a b
+-- consider making Append (Empty Empty) = Empty
 
 -- return element 'a' at the provided index from the joinlist b a.
 indexJ :: (Sized b, Monoid b) => 
@@ -40,24 +41,28 @@ indexJ i (Append m j1 j2)
 -- indexJ 2  (Append (Size 3) (Single (Size 1) 200) (Append (Size 2) (Single (Size 1) 44) (Single (Size 1) 10)))
 -- indexJ 0  (Append (Size 2) (Single (Size 1) 200) (Single (Size 1) 10))
 
--- another way to do indexJ
--- 1. use +++ to create a JoinList of only the nodes on the path to the element we want (always use right child?). track the number of moves to get to the element.  this is i.
--- 2. write a function to grab an index from a JoinList of right only
--- dumb. once you've walked the path to find element why build up another list.  not sure how to use +++ or a function like ||? to implement this.
-
 -- drop the first i elements from the joinList
-dropJ :: (Sized b, Monoid b) =>
-         Int -> JoinList b a -> JoinList b a
-dropJ _ Empty = Empty
-dropJ i (Single m n) 
-      | i == 0 = (Single m n) 
-      | otherwise = Empty
-dropJ i (Append _ j1 j2) = let p = (tagi j1) - i
-                               q = i - (tagi j2) 
-                           in (dropJ p j1) +++ (dropJ q j2)
-
 -- is takeJ just the opposite of dropJ
---takeJ :: (Sized b, Monoid b) =>
---         Int -> JoinList b a -> JoinList b a
+dropJ :: (Sized b, Monoid b) => 
+          Int -> JoinList b a -> JoinList b a
+dropJ i = takeJ' i (<= 0) 
+
+takeJ :: (Sized b, Monoid b) =>
+         Int -> JoinList b a -> JoinList b a
+takeJ _ Empty = Empty
+takeJ i _ 
+      | i <= 0 = Empty
+takeJ i (Single m n) 
+      | i > 0 = Single m n 
+      | otherwise = Empty
+takeJ i (Append _ j1 j2) = let k = i - tagi j1 
+                           in takeJ i j1 +++ takeJ k j2
+
+takeJ' :: (Sized b, Monoid b) =>
+          Int -> (Int -> Bool) -> JoinList b a -> JoinList b a
+takeJ' _ _ Empty            = Empty
+takeJ' i f (Single m n)     = if f i then Single m n else Empty
+takeJ' i f (Append _ j1 j2) = let k = i - tagi j1
+                              in takeJ' i f j1 +++ takeJ' k f j2
 
 
