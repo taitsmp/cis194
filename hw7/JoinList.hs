@@ -3,6 +3,7 @@ module JoinList where
 
 import Data.Monoid
 import Sized
+import Scrabble
 
 data JoinList m a = Empty
                   | Single m a
@@ -65,4 +66,5 @@ takeJ' i f (Single m n)     = if f i then Single m n else Empty
 takeJ' i f (Append _ j1 j2) = let k = i - tagi j1
                               in takeJ' i f j1 +++ takeJ' k f j2
 
-
+scoreLine :: String -> JoinList Score String 
+scoreLine s = Single (scoreString s) s

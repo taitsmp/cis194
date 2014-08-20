@@ -18,7 +18,7 @@ score' c = fromMaybe 0 $ findIndex (\a -> toLower c `elem` a) [[], "aeilnorst", 
 score :: Char -> Score
 score c = Score (score' c)
            
---scoreString :: String -> Score
--- could I calculate this with a Monoid? 
+scoreString :: String -> Score
+scoreString s = mconcat $ map score s
 
 
