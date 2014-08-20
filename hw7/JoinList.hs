@@ -68,3 +68,11 @@ takeJ' i f (Append _ j1 j2) = let k = i - tagi j1
 
 scoreLine :: String -> JoinList Score String 
 scoreLine s = Single (scoreString s) s
+
+-- use 'f' on data and 'g' on annotation.
+joinListFold:: b -> (b -> a -> b) -> (b -> m -> b -> b) ->  JoinList m a -> b 
+joinListFold b _ _ Empty          = b
+joinListFold b f _ (Single _ a)   = f b a
+joinListFold b f g (Append m j1 j2) = g (joinListFold b f g j1) m (joinListFold b f g j2) 
+
+
