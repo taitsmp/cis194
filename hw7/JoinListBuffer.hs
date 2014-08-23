@@ -4,7 +4,8 @@ module JoinListBuffer where
 import Data.Monoid
 import Buffer
 import JoinList
-import Size
+import Sized
+import Scrabble
 
 instance Buffer (JoinList(Score, Size) String) where
 
@@ -12,12 +13,24 @@ instance Buffer (JoinList(Score, Size) String) where
   toString :: JoinList(Score, Size) String -> String
   toString j = joinListFold [] (++) id  
 
+
   -- would be better to create a tree structure one 'Single' per line?
+  -- how to insert and keep lines in order?
+  -- how to insert lines and keep the tree somewhat balanced?
+  -- could I make a list with tuples of line number and JoinList.  randomize the list and then insert into the tree. won't be perfectly balanced but won't be terrible either
+     -- won't work..can't tell ordering. 
+  -- can I use 'size' to know where to insert?  smallest subtree gets the element.  won't work
+  -- can I use indexJ at all to help?
+  -- lines only stored on "single"
   -- 1. create Single for each line.  
   -- 2. Take list of Singles and insert into JoinList.
   -- | Create a buffer from a String.
   fromString :: String -> JoinList(Score, Size) String 
-  fromStrng s = let sc = scoreString s
+  fromString s = ss = map (lines) s
+
+
+let sc = scoreString s
+
                     sz = length s 
                 in Single (sc, Size sz) s
 
@@ -41,3 +54,7 @@ instance Buffer (JoinList(Score, Size) String) where
   --   be paid for publishing the contents of the buffer.
   value :: JoinList(Score, Size) String  -> Int
   -- top element should have this it its' Score monoid
+
+
+--
+
