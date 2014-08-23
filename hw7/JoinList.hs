@@ -75,4 +75,12 @@ joinListFold b _ _ Empty          = b
 joinListFold b f _ (Single _ a)   = f b a
 joinListFold b f g (Append m j1 j2) = g (joinListFold b f g j1) m (joinListFold b f g j2) 
 
+jlFromLines:: [String] -> JoinList(Score, Size) String
+jlFromLines xs = case length xs of
+                   0         -> Empty
+                   1         -> let s = head xs in Single (scoreString s, Size 1) s
+                   _         -> let mid   = length xs `div` 2 
+                                    (l,r) = splitAt mid xs
+                                in jlFromLines l +++ jlFromLines r
+
 
