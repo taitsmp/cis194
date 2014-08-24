@@ -38,6 +38,8 @@ indexJ i (Append m j1 j2)
      where 
        last' = getSize(size m) - 1 
 
+-- could indexJ have been written with dropJ? drop n-1 then take 1 ? 
+
 -- tested and working on inputs like
 -- indexJ 2  (Append (Size 3) (Single (Size 1) 200) (Append (Size 2) (Single (Size 1) 44) (Single (Size 1) 10)))
 -- indexJ 0  (Append (Size 2) (Single (Size 1) 200) (Single (Size 1) 10))
@@ -74,6 +76,7 @@ joinListFold:: b -> (b -> a -> b) -> (b -> m -> b -> b) ->  JoinList m a -> b
 joinListFold b _ _ Empty          = b
 joinListFold b f _ (Single _ a)   = f b a
 joinListFold b f g (Append m j1 j2) = g (joinListFold b f g j1) m (joinListFold b f g j2) 
+
 
 jlFromLines:: [String] -> JoinList(Score, Size) String
 jlFromLines xs = case length xs of

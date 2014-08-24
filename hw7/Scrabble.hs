@@ -12,6 +12,9 @@ instance Monoid Score where
   mempty  = Score 0
   mappend = (+) 
 
+getScore :: Score -> Int
+getScore (Score i) = i
+
 score' :: Char -> Int
 score' c = fromMaybe 0 $ findIndex (\a -> toLower c `elem` a) [[], "aeilnorst", "dg", "bcmp", "fhvwy", "k", [], [], "j", [], "qz"]
 
