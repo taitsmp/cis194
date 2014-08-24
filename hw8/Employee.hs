@@ -1,6 +1,7 @@
 module Employee where
 
 import           Data.Tree
+import           Data.Monoid
 
 -- Employee names are represented by Strings.
 type Name = String
@@ -50,3 +51,11 @@ data GuestList = GL [Employee] Fun
 
 instance Ord GuestList where
   compare (GL _ f1) (GL _ f2) = compare f1 f2
+
+glCons:: Employee -> GuestList -> GuestList
+glCons e (GL es f) = GL (e:es) (empFun e + f) 
+
+instance Monoid GuestList where
+  mempty = GL [] 0
+  mappend (GL el1 f1) (GL el2 f2) = GL (el1 ++ el2) (f1 + f2) 
+
