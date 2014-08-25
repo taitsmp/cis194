@@ -63,6 +63,6 @@ moreFun:: GuestList -> GuestList -> GuestList
 moreFun = max 
 
 -- f must aggregate b values.
-foldTree:: b -> ([b] -> a -> b) -> Tree a -> b
-foldTree e f (Node x []) = f [e] x
-foldTree e f (Node x ts) = f (map (foldTree e f) ts) x 
+foldTree:: (a -> [b] -> b) -> Tree a -> b
+foldTree f (Node x ts) = f x (map (foldTree f) ts)  
+-- needed help from internet to get this right -> http://web.cecs.pdx.edu/~mpj/pubs/springschool95.pdf
