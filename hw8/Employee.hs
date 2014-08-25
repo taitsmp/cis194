@@ -64,5 +64,5 @@ moreFun = max
 
 -- f must aggregate b values.
 foldTree:: b -> ([b] -> a -> b) -> Tree a -> b
-foldTree e f (Node a []) = f [e] a 
+foldTree e f (Node x []) = f [e] x
 foldTree e f (Node x ts) = f (map (foldTree e f) ts) x 
