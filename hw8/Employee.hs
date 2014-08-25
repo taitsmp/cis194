@@ -59,3 +59,10 @@ instance Monoid GuestList where
   mempty = GL [] 0
   mappend (GL el1 f1) (GL el2 f2) = GL (el1 ++ el2) (f1 + f2) 
 
+moreFun:: GuestList -> GuestList -> GuestList
+moreFun = max 
+
+-- this is probably wrong.  force the function to aggregate 'b' values. 
+foldTree:: b -> ([b] -> a -> [Tree a] -> b) -> Tree a -> b
+foldTree e f   (Node a []) = f [e] a []
+foldTree e f t@(Node x ts) = f (foldTree e f t : map (foldTree e f) ts) x ts
