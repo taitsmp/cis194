@@ -33,7 +33,7 @@ testCompany
 testCompany2 :: Tree Employee
 testCompany2
   = Node (Emp "Stan" 9)
-    [ Node (Emp "Bob" 3) -- (8, 8)
+    [ Node (Emp "Bob" 3) -- (8, 8)  -- should this be (8,9) ? John 1 + Sue 5 + Fred 3 = 9
       [ Node (Emp "Joe" 5) -- (5, 6)
         [ Node (Emp "John" 1) [] -- (1, 0)
         , Node (Emp "Sue" 5) [] -- (5, 0)
@@ -66,3 +66,13 @@ moreFun = max
 foldTree:: (a -> [b] -> b) -> Tree a -> b
 foldTree f (Node x ts) = f x (map (foldTree f) ts)  
 -- needed help from internet to get this right -> http://web.cecs.pdx.edu/~mpj/pubs/springschool95.pdf
+
+-- takes a boss and the tuples of the subdivision guest lists he manages (with and without him)
+-- returns best list with boss and best list withou boss.
+-- no tree operations involved for this. 
+-- 1. don't invite the boss.  Can choose either subtree where boss is invited or boss is not invited...
+-- 2. invite the boss.  must choose all subtrees where subboss is not invited?
+nextLevel:: Employee -> [(GuestList, GuestList)] -> (GuestList, GuestList)
+-- this is the dumb way.  If the boss is not invited always invite the sub-boss
+nextLevel b sl = let a = mconcat sl in (glCons b $ fst a, snd a)
+
