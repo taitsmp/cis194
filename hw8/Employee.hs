@@ -70,9 +70,15 @@ foldTree f (Node x ts) = f x (map (foldTree f) ts)
 -- takes a boss and the tuples of the subdivision guest lists he manages (with and without him)
 -- returns best list with boss and best list withou boss.
 -- no tree operations involved for this. 
--- 1. don't invite the boss.  Can choose either subtree where boss is invited or boss is not invited...
--- 2. invite the boss.  must choose all subtrees where subboss is not invited?
+-- 1. invite the boss.  must choose the subtrees where subboss is not invited?
+-- 2. don't invite the boss.  Can choose either subtrees where sub boss is invited or sub boss is not invited...
 nextLevel:: Employee -> [(GuestList, GuestList)] -> (GuestList, GuestList)
 -- this is the dumb way.  If the boss is not invited always invite the sub-boss
-nextLevel b sl = let a = mconcat sl in (glCons b $ fst a, snd a)
+nextLevel b sl = let a = mconcat sl 
+-- this way of calculating second guestlist seems smarter.  not yet combined into result.
+                     c = foldr (\(e,f) acc -> acc `mappend` moreFun e f  ) (GL [] 0) sl
+                 in (glCons b $ fst a, snd a)
+
+
+
 
