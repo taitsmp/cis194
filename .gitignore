@@ -3,6 +3,8 @@
 *.db
 *.DS_Store
 *.swp
+*.swn
+*.swo
 *.out
 .*~
 \#*
