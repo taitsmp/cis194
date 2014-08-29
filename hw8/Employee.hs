@@ -77,6 +77,10 @@ nextLevel b sl = let wb = glCons b . mconcat $ map fst sl
                      nb = foldr (\(e,f) acc -> acc `mappend` moreFun e f  ) (GL [] 0) sl
                  in (wb, nb)
 
-
+-- accumulator will be a GuestList
+-- use foldTree
+maxFun :: Tree Employee -> GuestList
+maxFun t = moreFun wb nb
+           where (wb,nb) = foldTree nextLevel t 
 
 
