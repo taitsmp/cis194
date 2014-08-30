@@ -83,4 +83,8 @@ maxFun :: Tree Employee -> GuestList
 maxFun t = moreFun wb nb
            where (wb,nb) = foldTree nextLevel t 
 
-
+-- print total fun
+-- print guest list alphabetized by first name
+main = do 
+    putStrLn "Total Fun:"
+    putStrLn let (GL gl fun) = maxFun testCompany in show fun
