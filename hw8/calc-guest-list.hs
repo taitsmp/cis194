@@ -2,6 +2,8 @@
 
 import Data.Tree
 import Data.Monoid
+import Data.Ord
+import Data.List
 import Employee				
 
 
@@ -36,10 +38,13 @@ maxFun :: Tree Employee -> GuestList
 maxFun t = moreFun wb nb
            where (wb,nb) = foldTree nextLevel t 
 
+compareEmps :: Employee -> Employee -> Ordering
+compareEmps = comparing empName 
+
 -- print total fun
 -- print guest list alphabetized by first name
 main :: IO ()
 main = do 
-    putStrLn "Total Fun:"
-    putStrLn $ "tait" ++ show fun
-       where (GL _ fun) = maxFun testCompany 
+    putStrLn $ "Total Fun:" ++ show fun
+    mapM_ (putStrLn . empName) $ sortBy compareEmps emps  --sort and print names. 
+       where (GL emps fun) = maxFun testCompany 
