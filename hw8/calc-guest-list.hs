@@ -46,5 +46,6 @@ compareEmps = comparing empName
 main :: IO ()
 main = do 
     putStrLn $ "Total Fun:" ++ show fun
+    ctxt <- readFile "company.txt"
     mapM_ (putStrLn . empName) $ sortBy compareEmps emps  --sort and print names. 
-       where (GL emps fun) = maxFun testCompany 
+       where (GL emps fun) = maxFun $ show ctxt
