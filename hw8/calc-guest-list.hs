@@ -45,7 +45,7 @@ compareEmps = comparing empName
 -- print guest list alphabetized by first name
 main :: IO ()
 main = do 
+    c <- readFile "company.txt"
+    let (GL emps fun) = maxFun $ read c -- use "let" without "in" inside do blocks
     putStrLn $ "Total Fun:" ++ show fun
-    ctxt <- readFile "company.txt"
     mapM_ (putStrLn . empName) $ sortBy compareEmps emps  --sort and print names. 
-       where (GL emps fun) = maxFun $ show ctxt
