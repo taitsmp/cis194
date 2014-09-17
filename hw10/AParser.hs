@@ -58,11 +58,15 @@ posInt = Parser f
 -- Your code goes below here
 ------------------------------------------------------------
 
+--didn't use this.  not sure if I'm doing this wrong. 
 first :: (a -> b) -> (a,c) -> (b,c)
 first f (a, c) = (f a, c)
 
--- fmap :: (a -> b) -> f a -> f b  # just a reminder...f is a type constructor that takes one variable. 
 instance Functor Parser where
-  fmap g (Parser a) = case runParser a of  -- returns Maybe (a, String)  
-                        Nothing -> -- first g (_, []) what do I do here?   
-                        Just (x, xs) -> first g (x, xs)
+-- fmap :: (a -> b) -> f a -> f b 
+  fmap h (Parser g) = Parser fn 
+    where 
+      fn s = case g s of 
+              Nothing -> Nothing
+              Just (x, xs) -> Just (h x, xs)
+        
