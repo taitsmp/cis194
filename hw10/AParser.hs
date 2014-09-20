@@ -59,6 +59,7 @@ posInt = Parser f
 ------------------------------------------------------------
 
 --didn't use this.  not sure if I'm doing this wrong. 
+-- is this mean to take a function  and a tuple of parsed output so far + a string and return more parsed output and a string. 
 first :: (a -> b) -> (a,c) -> (b,c)
 first f (a, c) = (f a, c)
 
@@ -72,7 +73,9 @@ instance Functor Parser where
         
 
 instance Applicative Parser where
-  pure a = Parser (\s -> Just (a, []))
-  (Parser f) <*> something = fmap f something
+  pure a = Parser (\s -> Just (a, s))
+--  (<*>) :: Parser (a -> b) -> Parser a -> Parser b
+
+  (Parser g) <*> p = fmap g p
   
 
