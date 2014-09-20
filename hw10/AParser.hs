@@ -70,3 +70,9 @@ instance Functor Parser where
               Nothing -> Nothing
               Just (x, xs) -> Just (h x, xs)
         
+
+instance Applicative Parser where
+  pure a = Parser (\s -> Just (a, []))
+  (Parser f) <*> something = fmap f something
+  
+
