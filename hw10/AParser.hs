@@ -65,17 +65,24 @@ first f (a, c) = (f a, c)
 
 instance Functor Parser where
 -- fmap :: (a -> b) -> f a -> f b 
+-- fmap :: (a -> b) -> Parser a -> Parser b 
   fmap h (Parser g) = Parser fn 
     where 
       fn s = case g s of 
               Nothing -> Nothing
               Just (x, xs) -> Just (h x, xs)
-        
+
+-- newtype Parser a = Parser { runParser :: String -> Maybe (a, String) }
 
 instance Applicative Parser where
   pure a = Parser (\s -> Just (a, s))
---  (<*>) :: Parser (a -> b) -> Parser a -> Parser b
+-- (<*>) :: Parser (a -> b ) -> Parser a -> Parser b
+  (Parser g) <*> (Parser h) = Parser fn
+    where fn s = case g s of 
+                  Nothing -> Nothing
+                  Just (fab, xs) -> case h xs of 
+                                     Nothing      -> Nothing
+                                     Just (a, ys) -> Just (fab a, ys) 
 
-  (Parser g) <*> p = fmap g p
-  
+-- g :: String -> Maybe (a -> b, String)   
 
