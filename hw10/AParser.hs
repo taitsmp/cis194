@@ -84,8 +84,5 @@ instance Applicative Parser where
                                      Nothing      -> Nothing
                                      Just (a, ys) -> Just (fab a, ys) 
 
---this is wrong.  need to fix
---need to do this?
---(char -> char -> (char, char)) <$> Parser char <*> Parser char
 abParser :: Parser (Char, Char)
-abParser = <$> char 'a' <*> char 'b'
+abParser = (\x y -> (x, y)) <$> char 'a' <*> char 'b'
