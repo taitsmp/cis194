@@ -86,3 +86,9 @@ instance Applicative Parser where
 
 abParser :: Parser (Char, Char)
 abParser = (\x y -> (x, y)) <$> char 'a' <*> char 'b'
+
+abParser_ :: Parser ()
+abParser_ = (\_ _ -> ()) <$> char 'a' <*> char 'b'
+
+intPair :: Parser [Integer]
+intPair = (\i j -> [i, j]) <$> posInt <*> posInt 
