@@ -5,7 +5,6 @@
 module AParser where
 
 import           Control.Applicative
-
 import           Data.Char
 
 -- A parser for a value of type a is a function which takes a String
@@ -83,6 +82,13 @@ instance Applicative Parser where
                   Just (fab, xs) -> case h xs of 
                                      Nothing      -> Nothing
                                      Just (a, ys) -> Just (fab a, ys) 
+
+instance Alternative Parser where
+  empty = Parser $ const Nothing -- creates a function that takes anything and returns nothing. 
+  Parser p1 <|> Parser p2 = Parser fn 
+    where fn s = case p1 s of 
+                   Just(a, rest) -> Just(a, rest)
+                   Nothing       -> p2 s
 
 abParser :: Parser (Char, Char)
 abParser = (\x y -> (x, y)) <$> char 'a' <*> char 'b'
