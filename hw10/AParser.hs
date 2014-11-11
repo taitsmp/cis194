@@ -84,7 +84,7 @@ instance Applicative Parser where
                                      Just (a, ys) -> Just (fab a, ys) 
 
 instance Alternative Parser where
-  empty = Parser $ const Nothing -- creates a function that takes anything and returns nothing. 
+  empty = Parser $ const Nothing -- creates a function that takes anything and returns Nothing. 
   Parser p1 <|> Parser p2 = Parser fn 
     where fn s = case p1 s of 
                    Just(a, rest) -> Just(a, rest)
@@ -99,5 +99,5 @@ abParser_ = (\_ _ -> ()) <$> char 'a' <*> char 'b'
 intPair :: Parser [Integer]
 intPair = (\i j -> [i, j]) <$> posInt <*> posInt 
 
-intOrUpperCase :: Parser ()
-intOrUpperCase = (const () <$> posInt) <|> (const () <$> satisfy isUpper)
+intOrUppercase :: Parser ()
+intOrUppercase = (const () <$> posInt) <|> (const () <$> satisfy isUpper)
