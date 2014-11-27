@@ -12,7 +12,13 @@ import Control.Applicative
 ------------------------------------------------------------
 
 zeroOrMore :: Parser a -> Parser [a]
-zeroOrMore p = undefined
+zeroOrMore Parser g = Parser f
+  where
+    f s = case g s of
+           Just(x, s1) -> \x -> x <$> g s1 -- won't work. 
+	         Nothing     -> Nothing -- f and g functions take Strings and Maybe(a, String)
+
+
 
 oneOrMore :: Parser a -> Parser [a]
 oneOrMore p = undefined
